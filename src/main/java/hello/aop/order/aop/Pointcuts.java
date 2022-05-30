@@ -10,7 +10,7 @@ public class Pointcuts {
 
     //클래스 이름 패턴이 *Service
     @Pointcut("execution(* *..*Service.*(..))")
-    public void AllService() {
+    public void allService() {
     }
 
     @Pointcut("allOrder() && allService()")
