@@ -108,8 +108,45 @@ public class ExecutionTest {
 
     @Test
     void typeMatchInternal() throws NoSuchMethodException {
+        pointcut.setExpression("execution(* hello.aop.member.MemberServiceImpl.*(..))");
+        Method internalMethod = MemberServiceImpl.class.getMethod("internal", String.class);
+        assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void typeMatchNoSuperTypeMethodFalse() throws NoSuchMethodException {
         pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
         Method internalMethod = MemberServiceImpl.class.getMethod("internal", String.class);
         assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isFalse();
+    }
+
+    @Test
+    void argsMatch() throws NoSuchMethodException {
+        pointcut.setExpression("execution(* *(String))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void argsMatchNoArgs() throws NoSuchMethodException {
+        pointcut.setExpression("execution(* *())");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isFalse();
+    }
+
+    @Test
+    void argsMatchStar() throws NoSuchMethodException {
+        pointcut.setExpression("execution(* *(*))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void argsMatchAll() throws NoSuchMethodException {
+        pointcut.setExpression("execution(* *(..))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void argsMatchComplex() throws NoSuchMethodException {
+        pointcut.setExpression("execution(* *(String, ..))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 }
