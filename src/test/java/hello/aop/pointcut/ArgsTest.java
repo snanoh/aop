@@ -54,6 +54,6 @@ public class ArgsTest {
                 .matches(helloMethod, MemberServiceImpl.class)).isTrue();
         assertThat(pointcut("execution(* *(java.io.Serializable))") //매칭 실패
                 .matches(helloMethod, MemberServiceImpl.class)).isFalse();
-        assertThat(pointcut("execution(* *(Object))") //매칭 실패 .matches(helloMethod, MemberServiceImpl.class)).isFalse();
+        assertThat(pointcut("execution(* *(Object))")); //매칭 실패 .matches(helloMethod, MemberServiceImpl.class)).isFalse();
     }
 }
